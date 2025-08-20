@@ -2,6 +2,7 @@ package com.fix_engine.fix_engine;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ConfigurableApplicationContext;
 
 import com.fix_engine.fix_engine.client.FixClient;
 import com.fix_engine.fix_engine.oms.OmsApplication;
@@ -21,10 +22,11 @@ import quickfix.SocketInitiator;
 @SpringBootApplication
 public class FixEngineApplication {
     public static void main(String[] args) throws Exception {
-        SpringApplication.run(FixEngineApplication.class, args);
+        ConfigurableApplicationContext context =
+                SpringApplication.run(FixEngineApplication.class, args);
 
         // Start OMS acceptor
-        OmsApplication omsApp = new OmsApplication();
+        OmsApplication omsApp = context.getBean(OmsApplication.class);
         SessionSettings omsSettings = new SessionSettings("src/main/resources/oms.cfg");
         MessageStoreFactory storeFactory = new FileStoreFactory(omsSettings);
         LogFactory logFactory = new FileLogFactory(omsSettings);
@@ -33,7 +35,7 @@ public class FixEngineApplication {
         acceptor.start();
 
         // Start client initiator
-        FixClient client = new FixClient();
+        FixClient client = context.getBean(FixClient.class);
         SessionSettings clientSettings = new SessionSettings("src/main/resources/client.cfg");
         MessageStoreFactory clientStore = new FileStoreFactory(clientSettings);
         LogFactory clientLog = new FileLogFactory(clientSettings);

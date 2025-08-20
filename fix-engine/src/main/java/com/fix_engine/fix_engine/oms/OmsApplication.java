@@ -28,7 +28,9 @@ import quickfix.fix44.NewOrderSingle;
 public class OmsApplication extends MessageCracker implements Application {
 
     @Override public void onCreate(SessionID sessionId) {}
-    @Override public void onLogon(SessionID sessionId) {}
+    @Override public void onLogon(SessionID sessionId) {
+    	System.out.println(">> OMS logged on: " + sessionId);
+    }
     @Override public void onLogout(SessionID sessionId) {}
     @Override public void toAdmin(Message message, SessionID sessionId) {}
     @Override public void toApp(Message message, SessionID sessionId) throws DoNotSend {}
