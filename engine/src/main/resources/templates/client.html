@@ -1,0 +1,24 @@
+<form id="orderForm">
+  Symbol: <input id="symbol" /><br/>
+  Quantity: <input id="qty" /><br/>
+  Price: <input id="price" /><br/>
+  Side: <select id="side"><option>BUY</option><option>SELL</option></select><br/>
+  Type: <select id="type"><option>LIMIT</option><option>MARKET</option></select><br/>
+  <button type="button" onclick="submitOrder()">Send Order</button>
+</form>
+<script>
+function submitOrder() {
+  const order = {
+    symbol: document.getElementById('symbol').value,
+    quantity: parseInt(document.getElementById('qty').value),
+    price: parseFloat(document.getElementById('price').value),
+    side: document.getElementById('side').value,
+    type: document.getElementById('type').value
+  };
+  fetch('/client/order', {
+    method:'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify(order)
+  }).then(r=>r.text()).then(alert);
+}
+</script>
